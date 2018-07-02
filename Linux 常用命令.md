@@ -214,3 +214,8 @@
 - `%d` : 十进制
 - `printf "%-5s %-10s %-4.2f\n" 02 Jack 89.2345`
 - [更多参考](http://man.linuxde.net/printf)
+
+* `awk` : 强大的文本分析工具。
+* `awk [-F field-separator] 'commands' input-file(s)` : commands 是真正 awk 命令，[-F 域分隔符]是可选的。 input-file(s) 是待处理的文件。在 awk 中，文件的每一行中，由域分隔符分开的每一项称为一个域。通常，在不指名-F 域分隔符的情况下，默认的域分隔符是空格。`awk '{print $1,$4}' log.txt` : 每行按空格或 TAB 分割，输出文本中的 1、4 项
+* `awk -F fs` : fs 指定输入分隔符，fs 可以是字符串或正则表达式。`awk -F, '{print $1,$2}' log.txt` : 使用 , 分割。`awk -F '[ ,]' '{print $1,$2,$5}' log.txt` : 先使用空字符串分割，再使用 , 分割
+* [更多参考](http://man.linuxde.net/awk)
