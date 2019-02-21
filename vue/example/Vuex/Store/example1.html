@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"><children1></children1> <children2></children2></div>
+    <script src="../../vue.js"></script>
+    <script src="../vuex.js"></script>
+    <script>
+      var store = new Vuex.Store({
+        state: {
+          name: '我是名字'
+        },
+        mutations: {
+          change(state, name) {
+            state.name = name
+          }
+        }
+      })
+      var children1 = Vue.component('children1', {
+        template: '<div>{{ name }}</div>',
+        computed: {
+          name() {
+            return this.$store.state.name
+          }
+        }
+      })
+      var children2 = Vue.component('children2', {
+        template: `<div style="margin-top: 20px">{{ name }}<button @click="clickFn">改变</button></div>`,
+        computed: {
+          name() {
+            return this.$store.state.name
+          }
+        },
+        methods: {
+          clickFn() {
+            this.$store.commit('change', '123')
+          }
+        }
+      })
+      var app = new Vue({
+        el: '#app',
+        store,
+        components: {
+          children1,
+          children2
+        }
+      })
+    </script>
+  </body>
+</html>

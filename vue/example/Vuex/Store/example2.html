@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"><children1></children1> <children2></children2></div>
+    <script src="../../vue.js"></script>
+    <script src="../vuex.js"></script>
+    <script>
+      var store = new Vuex.Store({
+        state: {
+          name: 'name',
+          count: '123',
+          text: 'text'
+        }
+      })
+      var children1 = Vue.component('children1', {
+        template: '<div>{{ name }} {{ count }} {{ text }}</div>',
+        computed: {
+          name() {
+            return this.$store.state.name
+          },
+          count() {
+            return this.$store.state.count
+          },
+          text() {
+            return this.$store.state.text
+          }
+        }
+      })
+      var children2 = Vue.component('children2', {
+        template: '<div>{{ name }} {{ count }} {{ text }}</div>',
+        computed: {
+          ...Vuex.mapState(['name', 'count', 'text'])
+          // ...Vuex.mapState({
+          //   name: "name",
+          //   count: "count",
+          //   text: "text",
+          //   textChange: state => state.text
+          // })
+        }
+      })
+      var app = new Vue({
+        el: '#app',
+        store,
+        components: {
+          children1,
+          children2
+        }
+      })
+    </script>
+  </body>
+</html>

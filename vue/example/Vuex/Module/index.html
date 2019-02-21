@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"><children></children></div>
+    <script src="../../vue.js"></script>
+    <script src="../vuex.js"></script>
+    <script>
+      const RESET_NAME = 'RESET_NAME'
+      var store = new Vuex.Store({
+        modules: {
+          home: {
+            namespaced: true,
+            state: {
+              name: 'name'
+            },
+            mutations: {
+              [RESET_NAME](state, name) {
+                state.name = name
+              }
+            },
+            actions: {
+              resetName({ commit }, name) {
+                commit(RESET_NAME, name)
+              }
+            }
+          },
+          common: {
+            namespaced: true,
+            state: {
+              name: 'name'
+            },
+            mutations: {
+              [RESET_NAME](state, name) {
+                state.name = name
+              }
+            },
+            actions: {
+              resetName({ commit }, name) {
+                commit(RESET_NAME, name)
+              }
+            }
+          }
+        }
+      })
+      new Vue({
+        el: '#app',
+        store,
+        components: { children: () => import('./children.js') }
+      })
+    </script>
+  </body>
+</html>

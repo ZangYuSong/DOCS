@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"><children></children></div>
+    <script src="../vue.js"></script>
+    <script src="./vuex.js"></script>
+    <script>
+      const NUM_ADD = 'NUM_ADD'
+      const NUM_ADD_1 = 'NUM_ADD_1'
+      var store = new Vuex.Store({
+        state: {
+          name: 'name',
+          num: 0
+        },
+        mutations: {
+          resetName(state, name) {
+            state.name = name
+          },
+          [NUM_ADD](state, num) {
+            state.num += num
+          },
+          [NUM_ADD_1](state, data) {
+            state.num += data.num
+          }
+        }
+      })
+      var children = Vue.component('children', {
+        template: `<div>{{ name }} {{ num }}<div><button @click="setName1">setName1</button></div><div><button @click="setName2">setName2</button></div><div><button @click="addNum1">addNum1</button></div><div><button @click="addNum2">addNum2</button></div></div>`,
+        computed: {
+          ...Vuex.mapState(['name', 'num'])
+        },
+        methods: {
+          ...Vuex.mapMutations({
+            resetName: 'resetName',
+            add: NUM_ADD
+          }),
+          setName1() {
+            this.resetName('新名字1')
+          },
+          setName2() {
+            this.$store.commit('resetName', '新名字2')
+          },
+          addNum1() {
+            this.add(1)
+          },
+          addNum2() {
+            this.$store.commit({
+              type: NUM_ADD_1,
+              num: 2
+            })
+          }
+        }
+      })
+      var app = new Vue({
+        el: '#app',
+        store,
+        components: { children }
+      })
+    </script>
+  </body>
+</html>
