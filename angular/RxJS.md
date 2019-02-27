@@ -1,8 +1,10 @@
-# RxJS 6+
+# RxJS 6+ 入门学习
 
 ## 简介与基本概念
 
-> RxJS是一个使用可观察序列组成异步和基于事件的程序的库。它提供了一种核心类型，Observable，卫星类型（Observer，Schedulers，Subjects）和受Array＃extras（map，filter，reduce，every等）启发的运算符，允许将异步事件作为集合处理。
+> RxJS 是 ReactiveX 编程理念的 JavaScript 版本。ReactiveX 来自微软，它是一种针对异步数据流的编程。简单来说，它将一切数据，包括HTTP请求，DOM事件或者普通数据等包装成流的形式，然后用强大丰富的操作符对流进行处理，使你能以同步编程的方式处理异步数据，并组合不同的操作符来轻松优雅的实现你所需要的功能。
+
+> RxJS 是一个使用可观察序列组成异步和基于事件的程序的库。它提供了一种核心类型，Observable，卫星类型（Observer，Schedulers，Subjects）和受Array＃extras（map，filter，reduce，every等）启发的运算符，允许将异步事件作为集合处理。
 
 * `Observable` : 表示一个可调用的未来值或事件的集合
 * `Observer` : 一个回调函数的集合，它知道如何去监听由 Observable 提供的值
@@ -305,3 +307,52 @@ setTimeout(() => {
   result.subscribe(data => console.log(data))
 }, 4000)
 ```
+
+## 总结
+
+* 获取数据需要订阅 `Observable`
+* 对于冷的 `Observable` 每次订阅都会时候才会被创建，也就是每次都是一个新的 `Observable`
+* 从 6 版本往后，所有的操作符需要再 `pipe` 中执行
+* `Observable` 可以和 `Promise` 互相转换
+
+  ```js
+  of[1, 2, 3].toPromise()
+  from(new Promise())
+  ```
+
+* 使用 `catchError` 处理了错误之后，后续的订阅者就接收不到 error 信息。需要再返回一个新的 error
+
+  ``` js
+  import { Injectable } from '@angular/core'
+  import { HttpClient } from '@angular/common/http'
+  import { Observable, of, throwError } from 'rxjs'
+  import { catchError, switchMap } from 'rxjs/operators'
+  import { LoadingService } from './loading.service'
+  import { NzNotificationService } from 'ng-zorro-antd'
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class HttpService {
+    constructor(private http: HttpClient, private loading: LoadingService, private notifition: NzNotificationService) {}
+
+    processing(http: Observable<any>): Observable<any> {
+      this.loading.next(true)
+      return http.pipe(
+        switchMap(data => {
+          this.loading.next(false)
+          if (data.status === 1) {
+            return of(data.data)
+          }
+          return throwError(data)
+        }),
+        catchError((e: any) => {
+          this.notifition.error('错误', e.message)
+          return throwError(e)
+        })
+      )
+    }
+  }
+  ```
+
+**待完善**
