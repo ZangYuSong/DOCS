@@ -15,7 +15,7 @@
 
 ## 常用对象说明
 
-``` ts
+``` js
 // 与之前版本相比，所有的操作符在 pipe 管道中执行
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators'
@@ -33,7 +33,7 @@ of([1, 2]).pipe(map(item => item * 2))
 * `range` : 创建一个 Observable，它发出指定范围内的一系列数字
 * `timer` : 创建一个 Observable，在 dueTime 此后的每个 period 时间之后开始并发出不断增加的数字
 
-``` ts
+``` js
 import { Observable, of, from, fromEvent } from 'rxjs';
 
 const observable = new Observable(subscriber => {
@@ -71,7 +71,7 @@ range(0, 10)
 * `concatMap` : 将每个源值投影到 Observable，Observable 在输出 Observable 中合并，在合并下一个完成之前以序列化方式等待每个值。**concatMap 相当于将 mergeMap 并发参数设置为 1**
 * `pluck` : 根据 key 值提取 Observable 所产生的值的 value，匹配不上返回 undefined
 
-``` ts
+``` js
 import { of, interval } from 'rxjs';
 import { mapTo, map, scan, mergeMap, concatMap, bufferTime, take } from 'rxjs/operators'
 
@@ -126,7 +126,7 @@ result = of(
 * `debounceTime` : 延迟源 Observable 发出的值，但如果新值到达源 Observable，则会丢弃先前待处理的延迟发射。这是一个速率限制运算符，因为不可能在任何持续时间窗口中发出多个值 dueTime，但它也是一个类似延迟的运算符，因为输出发射不会像它们那样同时发生来源 Observable
 * `distinctUntilChanged` : 把相同的元素过滤掉，如果提供了比较器功能，则将为每个项目调用它以测试是否应该发出该值。如果未提供比较器功能，则默认使用相等性检查
 
-``` ts
+``` js
 import { of, interval } from 'rxjs';
 import { filter } from 'rxjs/operators'
 
@@ -151,7 +151,7 @@ of(1, 1, 2, 2, 2, 1, 1, 2, 3, 3, 4).pipe(distinctUntilChanged())
 * `combineLatest` : 组合多个 Observable 以创建一个 Observable，其值是根据每个输入 Observable 的最新值计算的。只要任何输入 Observable 发出一个值，它就会使用所有输入中的最新值计算公式，然后发出该公式的输出
 * `withLatestFrom` : 将源Observable与其他Observable组合以创建一个Observable，其值仅根据源发出的值从每个值的最新值计算。每当源Observable发出一个值时，它使用该值加上来自其他输入Observable的最新值计算公式，然后发出该公式的输出。
 
-``` ts
+``` js
 import { merge, interval, zip, concat, range, timer, combineLatest } from 'rxjs'
 import { take } from 'rxjs/operators'
 
@@ -183,7 +183,7 @@ fromEvent(document, 'click').pipe(withLatestFrom(interval(1000)))
 
 * `tap` : 对源 Observable 上的每个发射执行副作用，但返回与源相同的 Observable。截取源上的每个发射并运行一个函数，但只要不发生错误，就返回一个与源相同的输出
 
-``` ts
+``` js
 import { fromEvent } from 'rxjs'
 import { tap, map } from 'rxjs/operators'
 
@@ -215,7 +215,7 @@ Subject 即是 observable，又是 observer (观察者)。通过使用观察者�
   * 指定选择器，根据相应的内容共享 Observable
 * `multicast` : 所有的多播操作符都是以这个为基础封装而来
 
-``` ts
+``` js
 import { interval, Subject, ReplaySubject } from 'rxjs'
 import { take, share, publish, multicast } from 'rxjs/operators'
 
