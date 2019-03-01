@@ -8,4 +8,5 @@
 * [RxJS](./RxJS.md)
 * [路由](./路由.md)
 * [HttpClient](./HttpClient.md)
+* [i18n](./i18n.md)
 * 待完善
