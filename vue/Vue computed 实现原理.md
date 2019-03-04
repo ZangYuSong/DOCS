@@ -119,7 +119,7 @@ function createComputedGetter (key) {
 }
 ```
 
-* 5、watcher 的 value 实际上是调用的 wathcer.get 方法。这个方法有调用计算属性对应的 getter 方法。但我们在定义 watcher 的时候会传入  `{ lazy: true}` ，这时候我们在定义 watcher 的时候不会触发 get 方法，而反过来看步骤 4，当 `dirty = true` 的时候首先会调用 `watcher.evaluate()`
+* 5、watcher 的 value 实际上是调用的 watcher.get 方法。这个方法有调用计算属性对应的 getter 方法。但我们在定义 watcher 的时候会传入  `{ lazy: true}` ，这时候我们在定义 watcher 的时候不会触发 get 方法，而反过来看步骤 4，当 `dirty = true` 的时候首先会调用 `watcher.evaluate()`
 
 ``` js
 // 710
@@ -284,12 +284,93 @@ Watcher.prototype.update = function update() {
 ## 运行步骤
 
 * 初始化 cumputed 的时候会先初始化 props、data 等
-* 初始化 cumputed(!SSR) 时候，会添加其对应的 wathcer（创建的时候不会触发 get 方法）。
-* 我们在获取计算属性的值的时候，如果 dirty = true 会调用 wathcer.get 方法重新计算。随后 dirty = false
-* 在调用 get 方法的时候启动依赖收集，将 wathcer 添加到对应依赖的 sub 里
-* 在依赖项发生变化的时候会调用 set 方法，最终会调用 wathcer.update 方法将 dirty = true。这时候获取计算属性的时候会重新调用 wathcer.get 方法
+* 初始化 cumputed(!SSR) 时候，会添加其对应的 watcher（创建的时候不会触发 get 方法）。
+* 我们在获取计算属性的值的时候，如果 dirty = true 会调用 watcher.get 方法重新计算。随后 dirty = false
+* 在调用 get 方法的时候启动依赖收集，将 watcher 添加到对应依赖的 sub 里
+* 在依赖项发生变化的时候会调用 set 方法，最终会调用 watcher.update 方法将 dirty = true。这时候获取计算属性的时候会重新调用 watcher.get 方法
 
 ## 总结
 
-* 我们在依赖项没有变化的时候，一直使用的是 wathcer.value 也就是我们所说的缓存
-* 依赖项发生变化的时候重新计算一次 wathcer.value
+* 我们在依赖项没有变化的时候，一直使用的是 watcher.value 也就是我们所说的缓存
+* 依赖项发生变化的时候重新计算一次 watcher.value
+
+## 补充
+
+* 10、我们在 computed 收集依赖完成之后，就会调用 `cleanupDeps` 方法，步骤 5。将 newDeps 中的依赖转存到 deps 中
+
+``` js
+// 3176
+Watcher.prototype.cleanupDeps = function cleanupDeps () {
+    var this$1 = this;
+
+  var i = this.deps.length;
+  while (i--) {
+    var dep = this$1.deps[i];
+    if (!this$1.newDepIds.has(dep.id)) {
+      dep.removeSub(this$1);
+    }
+  }
+  var tmp = this.depIds;
+  this.depIds = this.newDepIds;
+  this.newDepIds = tmp;
+  this.newDepIds.clear();
+  tmp = this.deps;
+  this.deps = this.newDeps;
+  this.newDeps = tmp;
+  this.newDeps.length = 0;
+};
+
+// 689
+Dep.prototype.removeSub = function removeSub (sub) {
+  remove(this.subs, sub);
+};
+```
+
+* 11、我们通常一个 computed 会依赖另外一个 computed。假设 computedB 依赖了 computedA。当我们获取 computedB 的时候第一次调用 get。这时候（步骤 5） Dep.target === computedB -> computedB.getter -> computedA.getter 就会开启依赖收集，执行 computedA 的 `watcher.depend()`（步骤 4）。其中的 this$1.deps 就是 computedA 的依赖，这个方法将 computedB 的 watcher 添加到 computedA 的依赖中
+
+``` js
+// 3254
+Watcher.prototype.depend = function depend () {
+    var this$1 = this;
+
+  var i = this.deps.length;
+  while (i--) {
+    this$1.deps[i].depend();
+  }
+};
+```
+
+* 12、这时候 computedA 的依赖添加了 computedA 的 watcher 和 computedB 的 watcher。computedB 的依赖添加 computedB 的 watcher。相关依赖触发了 set 会通知到对应的 computed watcher，从而触发重新计算
+* 13、当我们组件注销的时候同时会触发对应的注销函数，清除对应的 watcher
+
+``` js
+// 2708
+if (vm._watcher) {
+  vm._watcher.teardown();
+}
+var i = vm._watchers.length;
+while (i--) {
+  vm._watchers[i].teardown();
+}
+
+// 3266
+Watcher.prototype.teardown = function teardown () {
+    var this$1 = this;
+
+  if (this.active) {
+    // remove self from vm's watcher list
+    // this is a somewhat expensive operation so we skip it
+    // if the vm is being destroyed.
+    if (!this.vm._isBeingDestroyed) {
+      remove(this.vm._watchers, this);
+    }
+    var i = this.deps.length;
+    while (i--) {
+      this$1.deps[i].removeSub(this$1);
+    }
+    this.active = false;
+  }
+};
+```
+
+* 14、步骤9 中的 update 方法，在不同情况下会触发不同的方法，这里我们就不一一解释了。感兴趣的可以自己去看看
