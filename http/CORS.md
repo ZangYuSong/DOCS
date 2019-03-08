@@ -34,6 +34,7 @@
 ## 响应
 
 - `Access-Control-Allow-Origin (必选)` : `* (接受任意域名的请求)` 或者 `Origin (接受指定域名的请求)` 字段的值。**设置多个指定域名的方法**：在后台判断当前域名是否允许访问然后再设置对应的值。
+
   ```js
   app.all('*', function(req, res, next) {
     if (req.headers.origin == 'https://www.google.com' || req.headers.origin == 'https://www.baidu.com') {
@@ -42,9 +43,11 @@
     next();
   });
   ```
+
 - `Access-Control-Allow-Credentials` : 布尔值，是否允许发送 `Cookie`。默认 `Cookie` 不包括在 `CORS` 请求之中。值只能为 `true`，不需要的时候不设置该字段即可。
 
   - 上述说的是服务端的配置，如果要把 `Cookie` 发到服务器同时客户端也需要配置 - 打开 `withCredentials`
+
     ```js
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
