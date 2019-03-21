@@ -32,7 +32,7 @@
 
 ## git push
 
-- `git push <远程主机名> <远程分支名>:<本地分支名>` : `git push origin master`将 master 分支的代码推送到 origin 远程的 branch 分支中
+- `git push <远程主机名> <远程分支名>:<本地分支名>` : `git push origin master`将 master 分支的代码推送到 origin 远程的 master 分支中
 - `git push -u origin master` : 指定一个默认远程，将本地的 master 分支推送到远程主机的 master 分支中。如果 master 不存在，则会被新建。**首次提交的时候需要执行该命令，指定一个默认的远程**
 - `git push` : 将当前分支的代码推送到对应的远程分支中。**指定了默认远程或者只存在一个远程则可以省略主机名。当前分支与远程分支之间存在追踪关系则可以省略分支名**
 - `git push origin --delete master | git push origin :master` : 删除 origin 远程的 master 分支
@@ -41,7 +41,7 @@
 
 - `git pull <远程主机名> <远程分支名>:<本地分支名>` : `git pull origin master`从 origin 远程拉去 master 分支代码并和本地 master 分支合并。**指定了默认远程或者只存在一个远程则可以省略主机名。当前分支与远程分支之间存在追踪关系则可以省略分支名**
 - `git pull` 等同于 `git fetch` 和 `git merge` 两个操作
-- `git pull --rebase` : 抓去代码合并的同事，剔除一些毫无意义的 merge commit 信息。例如：比如：Merge banchA into branchB.
+- `git pull --rebase` : 抓取代码合并的同时，剔除一些毫无意义的 merge commit 信息。例如：比如：Merge banchA into branchB.
 
 ## git stash
 
