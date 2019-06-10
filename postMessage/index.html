@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>index</title>
+    <script>
+      function postMessage(data) {
+        var appA = document.querySelector('#appA')
+        appA.contentWindow.postMessage(
+          {
+            type: 'login',
+            data
+          },
+          'http://127.0.0.1:50916'
+        )
+        var appB = document.querySelector('#appB')
+        appB.contentWindow.postMessage(
+          {
+            type: 'login',
+            data
+          },
+          'http://127.0.0.1:52765'
+        )
+      }
+
+      window.addEventListener('message', e => {
+        if (e.data.type === 'login') {
+          postMessage(e.data.data)
+        }
+      })
+    </script>
+  </head>
+  <body>
+    <iframe id="appA" src="http://127.0.0.1:50916" frameborder="0"></iframe>
+    <iframe id="appB" src="http://127.0.0.1:52765" frameborder="0"></iframe>
+  </body>
+</html>
