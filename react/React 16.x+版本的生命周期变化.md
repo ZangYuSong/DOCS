@@ -1,5 +1,8 @@
 # React 16.x+版本的生命周期变化
 
+[官方文档](https://github.com/reactjs/reactjs.org/blob/master/content/blog/2018-03-27-update-on-async-rendering.md)
+[参考](https://www.imooc.com/article/27954?block_id=tuijian_wz)
+
 ## 简介
 
 - `componentWillMount` : 实例挂载之前
