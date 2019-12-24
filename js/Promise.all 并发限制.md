@@ -71,7 +71,7 @@ for (let index = 0; index < 10; index++) {
   });
 }
 
-PoolPromise(result).then(data => {
+PromiseLimit(result).then(data => {
   console.log(data);
 });
 ```
@@ -96,7 +96,7 @@ for (let index = 0; index < 10; index++) {
     });
   });
 }
-PoolPromise(result).then(
+PromiseLimit(result).then(
   data => {
     console.log("成功", data);
   },
