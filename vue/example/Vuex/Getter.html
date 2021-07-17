@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"><children></children></div>
+    <script src="../vue.js"></script>
+    <script src="./vuex.js"></script>
+    <script>
+      var store = new Vuex.Store({
+        state: {
+          name: 'name'
+        },
+        getters: {
+          nameText(state) {
+            return state.name + 'Text'
+          }
+        }
+      })
+      var children = Vue.component('children', {
+        template: '<div>{{ name }} {{ nameText }}</div>',
+        computed: {
+          ...Vuex.mapState(['name']),
+          ...Vuex.mapGetters(['nameText'])
+        }
+      })
+      var app = new Vue({
+        el: '#app',
+        store,
+        components: { children }
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 100px;
+      }
+      div {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+      }
+      .one {
+        background-color: #2196f3;
+      }
+      .two {
+        transform: translateX(200px);
+        background-color: #ef5350;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="one"></div>
+    <div class="two"></div>
+    <script>
+      const one = document.querySelector(".one");
+      const two = document.querySelector(".two");
+      one
+        .animate(
+          [
+            {
+              transform: "translateX(0)",
+            },
+            {
+              transform: "translateX(200px)",
+            },
+          ],
+          {
+            duration: 300,
+            fill: "forwards",
+            easing: "ease-in",
+          }
+        )
+        .finished.then(() => {
+          two.animate(
+            [
+              {
+                transform: "translateX(200px)",
+              },
+              {
+                transform: "translateX(400px)",
+              },
+            ],
+            {
+              duration: 300,
+              fill: "forwards",
+              easing: "ease-in",
+            }
+          );
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>自定义组件 - slot-scope</title>
+  </head>
+
+  <body>
+    <div id="app">
+      <children :list="list">
+        <div slot-scope="{ item }">我是自定义：{{ item.name }}</div>
+      </children>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      var app = new Vue({
+        el: '#app',
+        components: {
+          children: () => import('./slot-scope.js')
+        },
+        data: {
+          list: [{ name: '1' }, { name: '2' }]
+        }
+      })
+    </script>
+  </body>
+</html>

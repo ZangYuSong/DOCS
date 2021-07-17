@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <p>{{ message }}</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: "1"
+            },
+            beforeCreate: function () {
+                console.log('beforeCreate');
+                console.log("DOM = " + (this.$el && this.$el.innerText));
+                console.log("$data.message = " + (this.$data && this.$data.message));
+                console.log('-----------------------------------------------');
+            },
+            created: function () {
+                console.log('created');
+                console.log("DOM = " + (this.$el && this.$el.innerText));
+                console.log("$data.message = " + (this.$data && this.$data.message));
+                console.log('-----------------------------------------------');
+            },
+            beforeMount: function () {
+                console.log('beforeMount');
+                console.log("DOM = " + (this.$el && this.$el.innerText));
+                console.log("$data.message = " + (this.$data && this.$data.message));
+                console.log('-----------------------------------------------');
+            },
+            mounted: function () {
+                console.log('mounted');
+                console.log("DOM = " + (this.$el && this.$el.innerText));
+                console.log("$data.message = " + (this.$data && this.$data.message));
+                console.log('-----------------------------------------------');
+            },
+            beforeUpdate: function () {
+                console.log('beforeUpdate');
+                console.log("DOM = " + (this.$el && this.$el.innerText));
+                console.log("$data.message = " + (this.$data && this.$data.message));
+                console.log('-----------------------------------------------');
+            },
+            updated: function () {
+                console.log('updated');
+                console.log("DOM = " + (this.$el && this.$el.innerText));
+                console.log("$data.message = " + (this.$data && this.$data.message));
+                console.log('-----------------------------------------------');
+            },
+            beforeDestroy: function () {
+                console.log('beforeDestroy');
+                console.log("DOM = " + (this.$el && this.$el.innerText));
+                console.log("$data.message = " + (this.$data && this.$data.message));
+                console.log('-----------------------------------------------');
+            },
+            destroyed: function () {
+                console.log('destroyed');
+                console.log("DOM = " + (this.$el && this.$el.innerText));
+                console.log("$data.message = " + (this.$data && this.$data.message));
+                console.log('-----------------------------------------------');
+            }
+        })
+    </script>
+</body>
+
+</html>

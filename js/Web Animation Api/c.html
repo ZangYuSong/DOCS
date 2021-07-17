@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      div {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+      }
+      .one {
+        background-color: #2196f3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="one"></div>
+    <script>
+      const one = document.querySelector(".one");
+      one.animate(
+        [
+          {
+            transform: "translateY(-100px) scaleY(2.5) scaleX(.2)",
+            transformOrigin: "50% 0",
+            filter: "blur(40px)",
+            opacity: 0,
+          },
+          {
+            transform: "translateY(100px) scaleY(1) scaleX(1)",
+            transformOrigin: "50% 50%",
+            filter: "blur(0)",
+            opacity: 1,
+          },
+        ],
+        {
+          duration: 200,
+          fill: "forwards",
+          easing: "ease-in",
+        }
+      );
+    </script>
+  </body>
+</html>

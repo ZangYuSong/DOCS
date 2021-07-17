@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>自定义组件 - model</title>
+  </head>
+
+  <body>
+    <div id="app">
+      <div>
+        <button @click="data = !data">{{ !data ? '选中' : '取消选中' }}</button>
+      </div>
+      <children v-model="data"></children>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      var app = new Vue({
+        el: '#app',
+        components: {
+          children: () => import('./model.js')
+        },
+        data: {
+          data: false
+        }
+      })
+    </script>
+  </body>
+</html>

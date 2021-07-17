@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"><children></children></div>
+    <script src="../vue.js"></script>
+    <script src="./vuex.js"></script>
+    <script>
+      const SET_NAME = 'SET_NAME'
+      var store = new Vuex.Store({
+        state: {
+          name: 'name'
+        },
+        mutations: {
+          [SET_NAME](state, name) {
+            state.name = name
+          }
+        },
+        actions: {
+          resetName1({ commit }, name) {
+            commit(SET_NAME, name)
+          },
+          resetName2({ commit }, name) {
+            commit(SET_NAME, '')
+            setTimeout(() => {
+              commit(SET_NAME, name)
+            }, 3000)
+          }
+        }
+      })
+      var children = Vue.component('children', {
+        template: `<div>{{ name }}<div><button @click="setName1">setName1</button></div><div><button @click="setName2">setName2</button></div></div>`,
+        computed: {
+          ...Vuex.mapState(['name'])
+        },
+        methods: {
+          ...Vuex.mapActions(['resetName1']),
+          setName1() {
+            this.resetName1('新名字1')
+          },
+          setName2() {
+            this.$store.dispatch('resetName2', '新名字2')
+          }
+        }
+      })
+      var app = new Vue({
+        el: '#app',
+        store,
+        components: { children }
+      })
+    </script>
+  </body>
+</html>

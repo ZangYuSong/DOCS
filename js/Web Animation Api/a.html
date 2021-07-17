@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div {
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+      }
+      @keyframes move-and-change-color {
+        0% {
+          transform: translateX(0);
+          background-color: #2196f3;
+        }
+
+        100% {
+          transform: translateX(300px);
+          background-color: #ef5350;
+        }
+      }
+
+      #css {
+        animation-name: move-and-change-color;
+        animation-duration: 2s;
+        animation-fill-mode: forwards;
+        animation-direction: alternate;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in;
+      }
+      .stop {
+        animation-play-state: paused;
+      }
+    </style>
+  </head>
+  <body>
+    <button>停止</button>
+    <div id="css"></div>
+    <div id="js"></div>
+    <script>
+      let flag = true;
+      const js = document.querySelector("#js");
+      const button = document.querySelector("button");
+      const css = document.querySelector("#css");
+      const jsAnimate = js.animate(
+        [
+          {
+            transform: "translateX(0)",
+            background: "#2196f3",
+          },
+          {
+            transform: "translateX(300px)",
+            background: "#ef5350",
+          },
+        ],
+        {
+          duration: 2000,
+          fill: "forwards",
+          iterations: Infinity,
+          direction: "alternate",
+          easing: "ease-in",
+        }
+      );
+      button.addEventListener("click", () => {
+        if (flag) {
+          css.className = "stop";
+          jsAnimate.pause();
+          button.innerText = "运行";
+        } else {
+          css.className = "";
+          jsAnimate.play();
+          button.innerText = "停止";
+        }
+        flag = !flag;
+      });
+    </script>
+  </body>
+</html>
